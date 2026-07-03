@@ -13,7 +13,7 @@ ML pipeline predicting 21-day excess stock returns vs S&P 500 across 100 large-c
 
 ## Architecture
 
-​| Folder | Purpose |
+| Folder | Purpose |
 |---|---|
 | `data/` | yfinance ingestion (prices, fundamentals, news) → SQLite |
 | `features/` | fundamental, technical, valuation, FinBERT sentiment |
