@@ -23,6 +23,54 @@ ML pipeline predicting 21-day excess stock returns vs S&P 500 across 100 large-c
 | `explainability/` | SHAP analysis |
 | `recommendation/` | BUY/HOLD/SELL signal generation |
 | `dashboard/` | Streamlit interactive dashboard |
+
+## Repo Structure
+
+```
+equity-research/
+├── config.py                  # Tickers, dates, thresholds
+├── main.py                    # Full pipeline entrypoint
+├── requirements.txt
+│
+├── data/
+│   ├── storage.py              # SQLite connection + schema
+│   ├── fetcher.py               # Price & fundamentals ingestion (yfinance)
+│   └── news_fetcher.py          # News headline ingestion
+│
+├── features/
+│   ├── fundamental.py           # ROE, ROA, margins, Altman Z-Score
+│   ├── technical.py             # RSI, MACD, SMA/EMA, momentum
+│   ├── valuation.py             # PE, PB, EV/EBITDA (derived locally)
+│   ├── sentiment.py             # FinBERT headline scoring
+│   └── builder.py               # Merges all features + excess return target
+│
+├── models/
+│   ├── decision_tree.py         # Decision Tree (from scratch)
+│   ├── xgboost_model.py         # XGBoost (from scratch)
+│   ├── trainer.py               # Trains & compares all 5 models
+│   └── saved/                   # Trained model artifacts (.pkl)
+│
+├── evaluation/
+│   ├── metrics.py                # MAE, RMSE, R², Information Coefficient
+│   └── risk.py                   # VaR / CVaR
+│
+├── backtest/
+│   └── walkforward.py            # Walk-forward validation
+│
+├── explainability/
+│   └── shap_analysis.py          # SHAP feature attribution
+│
+├── recommendation/
+│   └── signal.py                  # BUY/HOLD/SELL signal logic
+│
+├── dashboard/
+│   └── app.py                     # Streamlit dashboard
+│
+└── src/utils/
+    └── logger.py                  # Logging config
+```
+
+
 ## Methodology
 
 1. Fetch daily prices, fundamentals, and news headlines for 100 equities + SPY
