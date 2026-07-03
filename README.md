@@ -66,6 +66,14 @@ streamlit run dashboard/app.py
 
 Python, pandas, scikit-learn, XGBoost, LightGBM, CatBoost, SHAP, FinBERT (transformers), yfinance, SQLite, Streamlit
 
+## Challenges & Fixes
+
+- **yfinance rate limiting**: Hit Yahoo's per-request rate limit fetching 100 tickers individually. Switched price ingestion to a single batched `yf.download()` call instead of per-ticker loops, cutting network requests from 100+ to 1.
+- **No batch API for fundamentals/valuation**: `yfinance.Ticker().info` has no batch equivalent, so valuation metrics were re-derived locally from cached price + fundamental data (PE, PB, EV/EBITDA computed from stored EPS, equity, debt, cash) instead of live API calls — eliminating rate-limit risk entirely for this stage.
+- **Slow scratch Decision Tree**: Initial implementation brute-forced every unique feature value as a split threshold, making it impractical on 170K+ rows. Fixed by sampling percentile-based candidate thresholds (~50 per feature) instead of all unique values.
+- **News schema change**: yfinance's news API silently changed its JSON structure (`title`/`providerPublishTime` → nested `content` object), causing headlines to be silently dropped. Fixed by handling both schemas defensively.
+- **Return framing**: Initially modeled raw forward returns, which mostly reflect broad market movement rather than stock-specific skill. Switched target to **excess return vs. SPY** to isolate alpha — the correct framing for systematic equity research (not beta-adjusted / not Jensen's alpha, noted as a limitation).
+  
 ## Limitations
 
 - Transaction costs and slippage not modeled
