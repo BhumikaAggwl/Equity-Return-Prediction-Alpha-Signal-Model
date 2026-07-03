@@ -13,16 +13,16 @@ ML pipeline predicting 21-day excess stock returns vs S&P 500 across 100 large-c
 
 ## Architecture
 
-​```
-data/           → yfinance ingestion (prices, fundamentals, news) → SQLite
-features/       → fundamental, technical, valuation, FinBERT sentiment
-models/         → Decision Tree (scratch), XGBoost (scratch), XGBoost/LightGBM/CatBoost (library)
-evaluation/     → IC, Sharpe, VaR/CVaR metrics
-backtest/       → walk-forward validation
-explainability/ → SHAP analysis
-recommendation/ → BUY/HOLD/SELL signal generation
-dashboard/      → Streamlit interactive dashboard
-​```
+​| Folder | Purpose |
+|---|---|
+| `data/` | yfinance ingestion (prices, fundamentals, news) → SQLite |
+| `features/` | fundamental, technical, valuation, FinBERT sentiment |
+| `models/` | Decision Tree (scratch), XGBoost (scratch), XGBoost/LightGBM/CatBoost (library) |
+| `evaluation/` | IC, Sharpe, VaR/CVaR metrics |
+| `backtest/` | walk-forward validation |
+| `explainability/` | SHAP analysis |
+| `recommendation/` | BUY/HOLD/SELL signal generation |
+| `dashboard/` | Streamlit interactive dashboard |
 ## Methodology
 
 1. Fetch daily prices, fundamentals, and news headlines for 100 equities + SPY
